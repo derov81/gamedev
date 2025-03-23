@@ -9,11 +9,19 @@ pygame.display.set_caption("My game")
 icon = pygame.image.load('images/icon.jpg')
 pygame.display.set_icon(icon)
 
+#задаем плоскость с размерами
+squere = pygame.Surface((50,50))
+#заливаем ее голубым цветом
+squere.fill('blue')
+
 running = True
 #для работы вечный цикл
 while running:
 
-    #screen.fill((72, 87, 189))
+    #выводит прямоугольник в координатах 0,0
+    screen.blit(squere,(275,125))
+
+    pygame.draw.circle(screen, 'red', (300,150), 25)
 
     # обновление консоли
     pygame.display.update()
@@ -23,9 +31,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                screen.fill((235, 232, 56))
 
 
 
