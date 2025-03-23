@@ -36,18 +36,27 @@ walk_left = [
 ]
 
 player_anim_count = 0
+fon_x = 0
+
+dog_sound = pygame.mixer.Sound('sounds/dog running.mp3')
+dog_sound.play()
 
 running = True
 #для работы вечный цикл
 while running:
 
-    screen.blit(fon,(0,0))
+    screen.blit(fon,(fon_x,0))
+    screen.blit(fon, (fon_x + 600, 0))
     screen.blit(walk_right[player_anim_count], (100, 300))
 
     if player_anim_count == 7:
         player_anim_count =0
     else:
         player_anim_count += 1
+
+    fon_x -= 2
+    if fon_x == - 600:
+        fon_x = 0
 
 
 
@@ -60,7 +69,7 @@ while running:
             running = False
             pygame.quit()
 
-    clock.tick(3)
+    clock.tick(10)
 
 
 
