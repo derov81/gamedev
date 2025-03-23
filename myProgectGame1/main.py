@@ -16,6 +16,7 @@ squere.fill('blue')
 
 myfont = pygame.font.Font('font/Rubik-Italic.ttf', 40)
 text_surface = myfont.render('Лева хороший', True,'Red')
+player = pygame.image.load('images/player.jpg')
 
 
 running = True
@@ -27,6 +28,7 @@ while running:
 
     pygame.draw.circle(screen, 'red', (300,150), 25)
     screen.blit(text_surface, (10, 80))
+    screen.blit(player, (100, 150))
 
     # обновление консоли
     pygame.display.update()
