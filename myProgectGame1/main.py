@@ -59,6 +59,10 @@ lose_label = label.render('Вы проиграли!!!', False, (193, 196, 199))
 restart_label = label.render('Играть заново', False, (115, 132, 148))
 restar_label_rect = restart_label.get_rect(topleft=(180,280))
 
+bullets_left = 5
+bullet = pygame.image.load('images/bullet.png').convert_alpha()
+bullets = []
+
 gameplay = True
 
 
@@ -116,6 +120,22 @@ while running:
         fon_x -= 2
         if fon_x == - 600:
             fon_x = 0
+
+
+
+        if bullets:
+            for ( i, el) in enumerate(bullets):
+                screen.blit(bullet, (el.x, el.y))
+                el.x += 4
+
+                if el.x > 630:
+                    bullets.pop(i)
+
+                if ghost_list_in_game:
+                    for (index, ghost_el) in enumerate(ghost_list_in_game):
+                        if el.colliderect(ghost_el):
+                            ghost_list_in_game.pop(index)
+                            bullets.pop(i)
     else:
         dog_sound.stop()
         screen.fill((87, 88, 89))
@@ -129,6 +149,8 @@ while running:
             gameplay =True
             player_x = 150
             ghost_list_in_game.clear()
+            bullets_left = 5
+            bullets.clear()
 
 
     # обновление консоли
@@ -141,7 +163,9 @@ while running:
             pygame.quit()
         if event.type == ghost_timer:
             ghost_list_in_game.append(ghost.get_rect(topleft=(620,250)))
-
+        if gameplay and event.type == pygame.KEYUP and event.key == pygame.K_b and bullets_left > 0:
+            bullets.append(bullet.get_rect(topleft=(player_x + 30, player_y+ 10)))
+            bullets_left -= 1
 
     clock.tick(10)
 
