@@ -12,28 +12,30 @@ pygame.display.set_icon(icon)
 fon = pygame.image.load('images/fon.jpg')
 
 walk_right = [
-    pygame.image.load('images/r/r1.png'),
-    pygame.image.load('images/r/r2.png'),
-    pygame.image.load('images/r/r3.png'),
-    pygame.image.load('images/r/r4.png'),
-    pygame.image.load('images/r/r5.png'),
-    pygame.image.load('images/r/r6.png'),
-    pygame.image.load('images/r/r7.png'),
-   # pygame.image.load('images/r/r8.png'),
-    pygame.image.load('images/r/r9.png'),
+    pygame.image.load('images/r/r1.png').convert_alpha(),
+    pygame.image.load('images/r/r2.png').convert_alpha(),
+    pygame.image.load('images/r/r3.png').convert_alpha(),
+    pygame.image.load('images/r/r4.png').convert_alpha(),
+    pygame.image.load('images/r/r5.png').convert_alpha(),
+    pygame.image.load('images/r/r6.png').convert_alpha(),
+    pygame.image.load('images/r/r7.png').convert_alpha(),
+    pygame.image.load('images/r/r9.png').convert_alpha(),
 ]
 
 walk_left = [
-    pygame.image.load('images/l/l1.png'),
-    pygame.image.load('images/l/l2.png'),
-    pygame.image.load('images/l/l3.png'),
-    pygame.image.load('images/l/l4.png'),
-    pygame.image.load('images/l/l5.png'),
-    pygame.image.load('images/l/l6.png'),
-    pygame.image.load('images/l/l7.png'),
-  #  pygame.image.load('images/l/l8.png'),
-    pygame.image.load('images/l/l9.png'),
+    pygame.image.load('images/l/l1.png').convert_alpha(),
+    pygame.image.load('images/l/l2.png').convert_alpha(),
+    pygame.image.load('images/l/l3.png').convert_alpha(),
+    pygame.image.load('images/l/l4.png').convert_alpha(),
+    pygame.image.load('images/l/l5.png').convert_alpha(),
+    pygame.image.load('images/l/l6.png').convert_alpha(),
+    pygame.image.load('images/l/l7.png').convert_alpha(),
+    pygame.image.load('images/l/l9.png').convert_alpha(),
 ]
+
+ghost = pygame.image.load('images/ghost.png').convert_alpha()
+
+ghost_list_in_game = []
 
 player_anim_count = 0
 fon_x = 0
@@ -43,11 +45,15 @@ player_x = 150
 player_y = 250
 
 is_jump = False
-jump_count = 7
+jump_count = 10
 
 
 dog_sound = pygame.mixer.Sound('sounds/dog running.mp3')
 dog_sound.play()
+
+ghost_timer = pygame.USEREVENT +1
+pygame.time.set_timer(ghost_timer, 2500)
+
 
 running = True
 #для работы вечный цикл
@@ -55,6 +61,17 @@ while running:
 
     screen.blit(fon,(fon_x,0))
     screen.blit(fon, (fon_x + 600, 0))
+
+
+    player_rect = walk_left[0].get_rect(topleft=(player_x, player_y))
+
+    if ghost_list_in_game:
+        for el in ghost_list_in_game:
+            screen.blit(ghost, el)
+            el.x -= 10
+
+            if player_rect.colliderect(el):
+                print('Вы проиграли!!!')
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
@@ -72,7 +89,7 @@ while running:
         if keys[pygame.K_SPACE]:
             is_jump =True
     else:
-        if jump_count >= -7:
+        if jump_count >= -10:
             if jump_count > 0:
                 player_y -= (jump_count ** 2) / 2
             else:
@@ -80,7 +97,7 @@ while running:
             jump_count -= 1
         else:
             is_jump = False
-            jump_count = 7
+            jump_count = 10
 
     if player_anim_count == 7:
         player_anim_count =0
@@ -93,6 +110,7 @@ while running:
 
 
 
+
     # обновление консоли
     pygame.display.update()
 
@@ -101,6 +119,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
+        if event.type == ghost_timer:
+            ghost_list_in_game.append(ghost.get_rect(topleft=(620,250)))
+
 
     clock.tick(10)
 
